@@ -1,0 +1,190 @@
+version: "3.8"
+
+services:
+#DealStoreWeb APP #################################################################
+    #####SQLServer DataBase
+    data: 
+        container_name: dealstore_db
+        image: waelamer/dealstore_db:1.0.0
+        ports: 
+            - "1433:1433"
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=4SY3yB6JvwJHsbYZuXjP
+        volumes: 
+            - sqldata:/var/opt/mssql 
+        networks:
+            - dealstoreweb-app
+        depends_on:
+            - influxdb
+            - loki
+        logging:
+          driver: loki
+          options:
+            loki-url: "http://localhost:3100/loki/api/v1/push"      
+    #####Backend Microservice/API "Deal"
+    deal:
+        container_name: dealstore_backend_deal
+        image: waelamer/dealstore_backend_deal:1.1.2
+        build:
+            context: ./Backend.Deal
+            dockerfile: ./Dockerfile        
+        ports:
+            - "8082:80"
+        environment:
+            - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+        hostname: "deal"
+        # command: 
+        #     telegraf --config telegraf/telegraf.conf
+        networks: 
+            - dealstoreweb-app
+        depends_on:
+            - influxdb
+            - loki
+        logging:
+          driver: loki
+          options:
+            loki-url: "http://localhost:3100/loki/api/v1/push"
+    #########Backend Microservice/API "Provider"
+    provider:
+        container_name: dealstore_backend_provider
+        image: waelamer/dealstore_backend_provider:1.1.2
+        build:
+            context: ./Backend.Provider
+            dockerfile: ./Dockerfile        
+        ports:
+            - "8081:80"
+        environment:
+            - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+        hostname: "provider"
+        # command: 
+            # telegraf --config telegraf/telegraf.conf
+        networks: 
+            - dealstoreweb-app
+        depends_on:
+            - influxdb
+            - loki
+        logging:
+          driver: loki
+          options:
+            loki-url: "http://localhost:3100/loki/api/v1/push"
+    #########Frontend 
+    frontend:
+        container_name: dealstore_frontend
+        image: waelamer/dealstore_frontend:1.1.2
+        build:
+            context: ./Frontend
+            dockerfile: ./Dockerfile        
+        ports:
+            - "8080:8080"
+        environment:
+            - VUE_APP_ROOT_API_P=http://localhost:8081
+            - VUE_APP_ROOT_API_D=http://localhost:8082
+            - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+        hostname: "frontend"
+        depends_on:
+            - influxdb
+            - loki
+        networks:
+            - dealstoreweb-app
+        # command: 
+                # telegraf --config /app/telegraf/telegraf.conf
+        logging:
+          driver: loki
+          options:
+            loki-url: "http://localhost:3100/loki/api/v1/push"
+
+#Monitotoring Tools #######################################################################
+    loki:
+        # container_name: dealstore_MonitoringTool_LOKI
+        image: grafana/loki:2.4.0        
+        volumes:
+            - ./loki:/etc/loki
+        ports:
+            - "3100:3100"
+        restart: unless-stopped
+        command: -config.file=/etc/loki/loki-config.yml
+        networks:
+            - dealstoreweb-app
+    
+    grafana:
+        # container_name: dealstore_MonitoringTool_GRAFANA
+        image: grafana/grafana:latest
+        user: "1000"
+        volumes:
+        - ./grafana:/var/lib/grafana
+        ports:
+            - "3000:3000"
+        depends_on:
+            - influxdb
+            - loki
+        links:
+            - influxdb
+        restart: unless-stopped
+        networks:
+            - dealstoreweb-app
+
+    influxdb:
+        image: influxdb:1.8-alpine
+        container_name: influxdb
+        restart: always
+        environment:
+            - INFLUXDB_DB=influx
+            - INFLUXDB_ADMIN_USER=admin
+            - INFLUXDB_ADMIN_PASSWORD=admin
+        ports:
+            - '8086:8086'
+        volumes:
+            - influxdb_data:/var/lib/influxdb
+        networks:
+            - dealstoreweb-app
+    
+    jaeger-all-in-one:
+        image: jaegertracing/all-in-one:latest
+        ports:
+        - "16686:16686"
+        - "14268"
+        - "14250"
+        networks:
+            - dealstoreweb-app
+
+    zipkin-all-in-one:
+        image: openzipkin/zipkin:latest
+        ports:
+        - "9411:9411"
+        networks:
+            - dealstoreweb-app
+
+    otel-collector:
+        image: otel/opentelemetry-collector-contrib-dev:latest
+        command: ["--config=/etc/otel-collector-config.yaml", ""]
+        volumes:
+        - ./OpenTelementryCollector/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+        ports:
+        - "1888:1888"   # pprof extension
+        - "8888:8888"   # Prometheus metrics exposed by the collector
+        - "8889:8889"   # Prometheus exporter metrics
+        - "13133:13133" # health_check extension
+        - "4317"        # OTLP gRPC receiver
+        - "55670:55679" # zpages extension
+        depends_on:
+        - jaeger-all-in-one
+        - zipkin-all-in-one
+        networks:
+            - dealstoreweb-app
+
+    prometheus:
+        container_name: prometheus
+        image: prom/prometheus:latest
+        volumes:
+        - .prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+        ports:
+        - "9090:9090"
+        networks:
+            - dealstoreweb-app
+        
+networks:
+    dealstoreweb-app:
+volumes:
+    sqldata:
+    influxdb_data:

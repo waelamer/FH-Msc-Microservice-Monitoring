@@ -1,0 +1,58 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "dealstoreDBContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Models",
+   "OutputPath": "Models",
+   "ProjectRootNamespace": "DealStoreweb.Backend",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[CategoryTbl]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CustomerTbl]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProviderTbl]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RequestTbl]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ServiceTbl]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserTbl]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "dealstore-server.dealstoreDB",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}
