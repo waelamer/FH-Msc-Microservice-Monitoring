@@ -7,7 +7,7 @@ The demo exposes the following backends:
 ### App   
 
 
-    Frontend at http://localhost:8081/
+    Frontend at http://localhost:8080/
     Backend Provider API at http://localhost:8081/
     Backend Deal API at http://localhost:8082/
 
