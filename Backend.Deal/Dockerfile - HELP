@@ -1,0 +1,50 @@
+  # syntax=docker/dockerfile:1
+  FROM mcr.microsoft.com/dotnet/aspnet:5.0
+  COPY bin/Release/net5.0/ App/
+  WORKDIR /App
+  ENTRYPOINT ["dotnet", "DealStoreweb.Backend.dll"]
+
+#HELP TO DEPLOY
+#docker build -t dealstore_backend_deal .
+#docker login -u waelamer -p yourpass
+#docker push waelamer/dealstore_backend_deal:1.0.0
+#
+#docker image tag aspnetapp waelamer/dealstore_backend_deal:1.0.0
+#docker image push waelamer/dealstore_backend_deal:1.0.0
+#
+#docker run -d -p 8080:80 --name myapp waelamer/webapi_v1:1
+
+TO make an Image from docker 
+docker stop a6261d986fd6
+
+docker ps -a
+	CONTAINER ID   IMAGE                                        COMMAND                  CREATED             STATUS                         PORTS     NAMES
+	a6261d986fd6   mcr.microsoft.com/mssql/server:2019-latest   "/opt/mssql/bin/perm…"   About an hour ago   Exited (0) 9 seconds ago                 wizardly_leakey
+	10f567108905   mcr.microsoft.com/mssql/server:2019-latest   "/opt/mssql/bin/perm…"   2 hours ago         Exited (0) About an hour ago             happy_mccarthy
+docker commit wizardly_leakey
+
+docker images
+	REPOSITORY                       TAG           IMAGE ID       CREATED          SIZE
+	<none>                           <none>        6574ab64c8c9   15 seconds ago   1.61GB
+	grafana/grafana                  latest        b61ea033219f   5 weeks ago      279MB
+	mcr.microsoft.com/mssql/server   2019-latest   d78e982c2f2b   3 months ago     1.48GB
+	grafana/loki                     2.4.0         24d3d94c71c7   6 months ago     62.5MB
+	grafana/promtail                 2.4.0         f568284f5b06   6 months ago     179MB
+	
+docker tag 6574ab64c8c9 waelamer/dealstore_db:1.0.0
+docker images
+	REPOSITORY                       TAG           IMAGE ID       CREATED         SIZE
+	waelamer/dealstore_db            1.0.0         6574ab64c8c9   7 minutes ago   1.61GB
+	grafana/grafana                  latest        b61ea033219f   5 weeks ago     279MB
+	mcr.microsoft.com/mssql/server   2019-latest   d78e982c2f2b   3 months ago    1.48GB
+	grafana/loki                     2.4.0         24d3d94c71c7   6 months ago    62.5MB
+	grafana/promtail                 2.4.0         f568284f5b06   6 months ago    179MB
+	
+docker login -u waelamer -p Portalisme@1983
+docker push waelamer/dealstore_db:1.0.0
+
+--Finaly run the SQL SERVER DB for DealStore
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=4SY3yB6JvwJHsbYZuXjP" -p 1433:1433 --env MSSQL_AGENT_ENABLED=True --name DealStore_DB --mount source=dealstore_db_sqldata,target=/var/opt/mssql -d waelamer/dealstore_db:1.0.0
+
+Server=tcp:localhost,1433;Initial Catalog=dealstoreDB;Persist Security Info=False;User ID=sa;Password=4SY3yB6JvwJHsbYZuXjP;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+Server=localhost,1433;database=dealstoreDB;User Id=sa;Password=4SY3yB6JvwJHsbYZuXjP
