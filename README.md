@@ -25,5 +25,6 @@ The demo exposes the following backends:
     Zipkin at http://0.0.0.0:9411
     Prometheus at http://0.0.0.0:9090
 
+### Run the demo local
 
 > git clone https://github.com/waelamer/FH-Msc-Microservice-Monitoring.git && cd FH-Msc-Microservice-Monitoring && docker-compose up -d --force-recreate 
