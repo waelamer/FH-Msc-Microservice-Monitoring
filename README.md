@@ -31,4 +31,5 @@ The demo exposes the following backends:
 
     Prometheus at http://0.0.0.0:9090
 
-git clone https://github.com/waelamer/FH-Msc-Microservice-Monitoring.git && cd FH-Msc-Microservice-Monitoring && docker-compose up -d --force-recreate 
+
+> git clone https://github.com/waelamer/FH-Msc-Microservice-Monitoring.git && cd FH-Msc-Microservice-Monitoring && docker-compose up -d --force-recreate 
