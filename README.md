@@ -8,9 +8,7 @@ The demo exposes the following backends:
 
 
     Frontend at http://localhost:8081/
-
     Backend Provider API at http://localhost:8081/
-
     Backend Deal API at http://localhost:8082/
 
 
@@ -19,16 +17,12 @@ The demo exposes the following backends:
 ### Monitor Tools
     Grafana Tools:
     Grafana at  http://localhost:3000/
-
     LOKI at http://localhost:3100/status
-
     InfluxDB at : http://localhost:8086/
 
     OpenTelemtry Tools :
     Jaeger at http://0.0.0.0:16686
-
     Zipkin at http://0.0.0.0:9411
-
     Prometheus at http://0.0.0.0:9090
 
 
