@@ -2,7 +2,7 @@
 
 > This demo contains a Microservice Deal&Provider Based on .net Core 6.0 and Frontend based on Vue 3.0 the application  use the opentelemetry NuGet library for  instrumentation and for sending telemetry data to the opentelemetry collector.
 
-<img src="./docs/Architect.jpg" alt="DealstoreWeb Monitoring tools" title="DealstoreWeb Monitoring tools">
+<img src="Docs/Architect.png" alt="DealstoreWeb Monitoring tools" title="DealstoreWeb Monitoring tools">
 
 #### The demo exposes the following backends:
 
