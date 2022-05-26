@@ -2,7 +2,9 @@
 
 > This demo contains a Microservice Deal&Provider Based on .net Core 6.0 and Frontend based on Vue 3.0 the application  use the opentelemetry NuGet library for  instrumentation and for sending telemetry data to the opentelemetry collector.
 
-The demo exposes the following backends:
+<img src="./docs/Architect.jpg" alt="DealstoreWeb Monitoring tools" title="DealstoreWeb Monitoring tools">
+
+#### The demo exposes the following backends:
 
 ### App   
 
@@ -16,9 +18,9 @@ The demo exposes the following backends:
 
 ### Monitor Tools
     Grafana Tools:
-    Grafana at  http://localhost:3000/
-    LOKI at http://localhost:3100/status
-    InfluxDB at : http://localhost:8086/
+    Grafana at  http://0.0.0.0:3000/
+    LOKI at http://0.0.0.0:3100/status
+    InfluxDB at : http://0.0.0.0:8086/
 
     OpenTelemtry Tools :
     Jaeger at http://0.0.0.0:16686
@@ -28,3 +30,6 @@ The demo exposes the following backends:
 ### Run the demo local
 
 > git clone https://github.com/waelamer/FH-Msc-Microservice-Monitoring.git && cd FH-Msc-Microservice-Monitoring && docker-compose up -d --force-recreate 
+
+
+
