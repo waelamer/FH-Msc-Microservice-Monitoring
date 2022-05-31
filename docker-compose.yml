@@ -172,7 +172,6 @@ services:
         - zipkin-all-in-one
         networks:
             - dealstoreweb-app
-
     prometheus:
         container_name: prometheus
         image: prom/prometheus:latest
