@@ -30,6 +30,8 @@
 ### Run the demo local
 
 > docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+
+
 > git clone https://github.com/waelamer/FH-Msc-Microservice-Monitoring.git && cd FH-Msc-Microservice-Monitoring && docker-compose up -d --force-recreate 
 
 
