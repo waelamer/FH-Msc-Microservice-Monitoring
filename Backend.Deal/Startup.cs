@@ -47,25 +47,7 @@ namespace DealStoreweb.Backend
                     opt.Protocol = OtlpExportProtocol.Grpc;
 
                 })
-                //Jaeger Exporter 
-                //.AddJaegerExporter(o =>
-                //{
-                //    o.AgentHost = "localhost";
-                //    o.AgentPort = 16686; // use port number here
-                //})
-                //ZipKin Exporter 
-                //.AddZipkinExporter(o =>
-                //{
-                //    o.Endpoint = new Uri("http://localhost:9411");
-                //})
-                //Prometheus Exporter 
-                //.AddPrometheusExporter(options =>
-                //{
-                //    options.StartHttpListener = true;
-                //    // Use your endpoint and port here
-                //    options.HttpListenerPrefixes = new string[] { $"http://localhost:{9090}/" };
-                //    options.ScrapeResponseCacheDurationMilliseconds = 0;
-                //})
+                
                 .AddConsoleExporter()
                 .AddSource(serviceName)
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName: serviceName, serviceVersion: serviceVersion))
