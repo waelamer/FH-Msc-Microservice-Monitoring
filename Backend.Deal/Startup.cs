@@ -16,6 +16,7 @@ using System.Diagnostics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Exporter;
+using OpenTelemetry.Metrics;
 
 
 namespace DealStoreweb.Backend
@@ -72,7 +73,21 @@ namespace DealStoreweb.Backend
                 .AddAspNetCoreInstrumentation()
                 .AddSqlClientInstrumentation();
             });
+            services.AddOpenTelemetryMetrics(b =>
+            {
+                b.AddMeter("DealStore.DealsMetrics");
+                b.AddOtlpExporter(opt =>
+                {
+                    opt.Endpoint = new Uri("http://otel-collector:4317");
+                    opt.Protocol = OtlpExportProtocol.Grpc;
 
+                });
+                b.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName: serviceName, serviceVersion: serviceVersion));
+                b.AddHttpClientInstrumentation();
+                b.AddAspNetCoreInstrumentation();
+
+
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DealHost.at Microservice Project Deal API", Version = "v1.0.1" });

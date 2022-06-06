@@ -17,6 +17,7 @@ using System.Diagnostics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Exporter;
+using OpenTelemetry.Metrics;
 
 namespace DealStoreweb.Backend
 {
@@ -35,6 +36,7 @@ namespace DealStoreweb.Backend
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             var serviceName = "DealStoreWeb.Backend.Provider";
             var serviceVersion = "1.0.0";
+
             services.AddOpenTelemetryTracing(b =>
             {
                 b
@@ -51,6 +53,20 @@ namespace DealStoreweb.Backend
                 .AddHttpClientInstrumentation()
                 .AddAspNetCoreInstrumentation()
                 .AddSqlClientInstrumentation();
+
+            });
+            services.AddOpenTelemetryMetrics(b =>
+            {
+                b.AddMeter("DealStore.ProvidersMetrics");
+                b.AddOtlpExporter(opt =>
+                 {
+                     opt.Endpoint = new Uri("http://otel-collector:4317");
+                     opt.Protocol = OtlpExportProtocol.Grpc;
+
+                 });
+                b.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName: serviceName, serviceVersion: serviceVersion));
+                b.AddHttpClientInstrumentation();
+                b.AddAspNetCoreInstrumentation();
             });
 
             services.AddSwaggerGen(c =>
@@ -96,6 +112,7 @@ namespace DealStoreweb.Backend
             app.UseRouting();
 
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

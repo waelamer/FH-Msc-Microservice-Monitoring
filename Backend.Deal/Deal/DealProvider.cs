@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -56,6 +57,12 @@ namespace DealStoreweb.Backend.Deal
                 {
                     logger?.LogInformation($"{deals.Count} Deals(s) found");
                     var result = mapper.Map<IEnumerable<ServiceTbl>, IEnumerable<Deal>>(deals);
+                    Meter s_meter = new Meter("DealStore.DealsMetrics", "1.0.0");
+                    Counter<int> DealCount = s_meter.CreateCounter<int>(name: "Deals-inDB",
+                                                                                unit: "Deals",
+                                                                              description: "The number of Deals in our store");
+                    DealCount.Add(deals.Count);
+
                     return (true, result, null);
                 }
 

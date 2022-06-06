@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,8 @@ namespace DealStoreweb.Backend.Provider
             var result = await _providerAPI.GetAll();
             if (result.IsSuccess)
             {
+                
+                
                 return Ok(result.Deals);
             }
             return NotFound();
@@ -53,6 +56,8 @@ namespace DealStoreweb.Backend.Provider
             var result = await _providerAPI.GetDetails(id);
             if (result.IsSuccess)
             {
+                
+
                 return Ok(result.Item2);
             }
             return NotFound();

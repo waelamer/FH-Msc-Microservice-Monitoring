@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -33,6 +34,12 @@ namespace DealStoreweb.Backend.Provider
                 {
                     logger?.LogInformation($"{providers.Count} Providers(s) found");
                     var result = mapper.Map<IEnumerable<ProviderTbl>, IEnumerable<Provider>>(providers);
+
+                    Meter s_meter = new Meter("DealStore.ProvidersMetrics", "1.0.0");
+                    Counter<int> ProviderCount = s_meter.CreateCounter<int>(name: "Providers-inDB",
+                                                                                unit: "Deals",
+                                                                              description: "The number of Providers in our store");
+                    ProviderCount.Add(providers.Count);
                     return (true, result, null);
                 }
 
