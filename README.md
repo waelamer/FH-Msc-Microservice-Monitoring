@@ -1,6 +1,10 @@
 # FH-Msc-Microservice-Monitoring
 
-> This demo contains a Microservice Deal&Provider Based on .net Core 6.0 and Frontend based on Vue 3.0 the application  use the opentelemetry NuGet library for  instrumentation and for sending telemetry data to the opentelemetry collector.
+> Discover a cutting-edge Microservice Cloud Native Project that leverages the power of .NET Core 6.0 for its backend, and Vue 3.0 for a sleek and intuitive frontend. This innovative application is designed with cloud-native principles in mind, ensuring scalability, resilience, and agility. It's the perfect choice for modern, dynamic environments. 
+
+What makes this project stand out? It harnesses the potential of the OpenTelemetry NuGet library, providing seamless instrumentation and the capability to send telemetry data to the OpenTelemetry Collector. This means you can easily monitor and optimize your application's performance, ensuring that it runs like a well-oiled machine.
+
+Join us on this exciting journey towards a cloud-native future, where your project scales effortlessly, adapts to changing needs, and takes advantage of the latest technologies. Welcome to the future of Microservice Cloud Native Development!
 
 <img src="Docs/Architect.jpg" alt="DealstoreWeb Monitoring tools" title="DealstoreWeb Monitoring tools">
 
